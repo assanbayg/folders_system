@@ -1,48 +1,44 @@
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 
-import 'add_files_to_folder_screen.dart';
 import 'create_folders_screen.dart';
+import 'folder_screen.dart';
 
-class AddFilesScreen extends StatefulWidget {
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+
   @override
-  _AddFilesScreenState createState() => _AddFilesScreenState();
+  _MainScreenScreenState createState() => _MainScreenScreenState();
 }
 
-class _AddFilesScreenState extends State<AddFilesScreen> {
-  List<String> _folders = ['Blood analysis'];
+class _MainScreenScreenState extends State<MainScreen> {
+  final List<String> _folders = ['Blood analyses'];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
+    ThemeData theme = Theme.of(context);
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
           children: [
-            const Text(
-              'Analyses',
-              style: TextStyle(fontSize: 20),
-            ),
             TextButton(
               onPressed: () async {
                 final result = await showModalBottomSheet(
                   context: context,
                   builder: (BuildContext context) {
-                    return Container(
+                    return SizedBox(
                       height: 200.0,
                       child: Column(
                         children: <Widget>[
                           ListTile(
-                            leading: Icon(Icons.folder),
-                            title: Text('Create folder'),
+                            leading: SizedBox(
+                                height: 30,
+                                child: Image.asset('assets/folder_icon.png')),
+                            title: const Text('Create folder'),
                             onTap: () {
                               Navigator.pop(context, 'create_folder');
-                            },
-                          ),
-                          ListTile(
-                            leading: Icon(Icons.attach_file),
-                            title: Text('Add single file'),
-                            onTap: () {
-                              Navigator.pop(context, 'add_single_file');
                             },
                           ),
                         ],
@@ -54,7 +50,7 @@ class _AddFilesScreenState extends State<AddFilesScreen> {
                   final folderName = await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CreateFolderScreen(),
+                      builder: (context) => const CreateFolderScreen(),
                     ),
                   );
                   if (folderName != null) {
@@ -71,7 +67,12 @@ class _AddFilesScreenState extends State<AddFilesScreen> {
                   }
                 }
               },
-              child: Text('Add'),
+              child: Row(
+                children: const [
+                  Icon(Icons.add_rounded),
+                  Text('Create'),
+                ],
+              ),
             ),
             SizedBox(
               height: 300,
@@ -95,8 +96,13 @@ class _AddFilesScreenState extends State<AddFilesScreen> {
                       }
                     },
                     child: ListTile(
-                      leading: Icon(Icons.folder),
-                      title: Text(_folders[index]),
+                      leading: SizedBox(
+                          height: 30,
+                          child: Image.asset('assets/folder_icon.png')),
+                      title: Text(
+                        _folders[index],
+                        style: theme.textTheme.bodyMedium,
+                      ),
                     ),
                   );
                 },
